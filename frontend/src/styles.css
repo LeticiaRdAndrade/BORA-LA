@@ -1,0 +1,83 @@
+/* Cores e fontes do site, todas num lugar só */
+:root {
+  --nevoa: #e9efe6;    /* fundo da página */
+  --papel: #fffefa;    /* cartões e campos */
+  --pinho: #1f4a40;    /* cor principal */
+  --tinta: #1d2825;    /* texto */
+  --suave: #5b6b64;    /* texto secundário */
+  --linha: #cfd9cc;    /* bordas */
+  --girassol: #f2b544; /* destaque */
+  --ferrugem: #b3472d; /* erros */
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--nevoa); color: var(--tinta); font: 400 1rem/1.55 "Nunito", system-ui, sans-serif; }
+h1, h2, h3, .marca { font-family: "Bricolage Grotesque", "Nunito", system-ui, sans-serif; line-height: 1.15; }
+h2 { color: var(--pinho); font-size: 1.6rem; margin: 0; }
+main { max-width: 760px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+:focus-visible { outline: 3px solid var(--girassol); outline-offset: 2px; }
+
+/* Botões e campos */
+button { font: inherit; cursor: pointer; }
+.botao, .botao-leve { border-radius: 999px; padding: 0.6rem 1.2rem; font-weight: 700; border: 1.5px solid var(--pinho); }
+.botao { background: var(--pinho); color: var(--papel); }
+.botao-leve { background: transparent; color: var(--pinho); }
+button:disabled { opacity: 0.45; cursor: default; }
+input { font: inherit; background: var(--papel); border: 1.5px solid var(--linha); border-radius: 12px; padding: 0.7rem 0.9rem; width: 100%; }
+
+/* Cabeçalho com as abas */
+.cabecalho { background: var(--pinho); color: var(--papel); padding: 1rem max(1.25rem, calc((100% - 760px) / 2)); }
+.cabecalho-topo { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.cabecalho .marca { color: var(--girassol); font-weight: 700; margin: 0; }
+.viagem-info { margin: 0; }
+.cabecalho .botao-leve { color: var(--papel); border-color: rgba(255, 254, 250, 0.5); }
+.abas { display: flex; gap: 0.5rem; margin-top: 1rem; overflow-x: auto; }
+.aba { background: transparent; border: 0; color: var(--papel); padding: 0.5rem 1rem; border-radius: 999px; font-weight: 700; white-space: nowrap; }
+.aba.ativa { background: var(--girassol); color: var(--pinho); }
+
+/* Tela inicial */
+.inicio { padding-top: 4rem; }
+.inicio .marca { color: var(--pinho); font-weight: 700; margin: 0; }
+h1 { color: var(--pinho); font-size: clamp(2.2rem, 8vw, 3.6rem); margin: 0.5rem 0 1rem; }
+.sub { color: var(--suave); font-size: 1.1rem; max-width: 34rem; margin: 0 0 2rem; }
+.painel { background: var(--papel); border: 1px solid var(--linha); border-radius: 24px; padding: 1.5rem; display: grid; gap: 1rem; }
+.painel label { display: grid; gap: 0.35rem; font-weight: 700; }
+.erro { color: var(--ferrugem); margin: 0; }
+
+/* Explorar e Digitar */
+.busca { display: flex; gap: 0.5rem; margin: 1rem 0; }
+.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1rem; }
+.cartao { background: var(--papel); border: 1px solid var(--linha); border-radius: 18px; padding: 1rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.8rem; }
+.cartao h3 { margin: 0; font-size: 1.05rem; }
+.aviso { color: var(--suave); padding: 0.5rem 0; }
+
+/* Roteiro: uma trilha vertical com as paradas numeradas */
+.roteiro-topo { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.acoes { display: flex; gap: 0.5rem; }
+.trilha { list-style: none; margin: 1.5rem 0 1rem; padding: 0; }
+.trilha li { position: relative; padding-left: 3rem; }
+.trilha li::before { content: ""; position: absolute; left: calc(1.1rem - 1.5px); top: 0; bottom: 0; width: 3px; background: var(--linha); }
+.trilha li:first-child::before { top: 1.6rem; }
+.trilha li:last-child::before { bottom: auto; height: 1.6rem; }
+.trilha li:only-child::before { display: none; }
+.parada { position: relative; display: flex; align-items: center; gap: 0.75rem; background: var(--papel); border: 1px solid var(--linha); border-radius: 16px; padding: 0.75rem 1rem; margin: 0.75rem 0; }
+.numero { position: absolute; left: -3rem; top: 50%; transform: translateY(-50%); z-index: 1; width: 2.2rem; height: 2.2rem; border-radius: 50%; background: var(--pinho); color: var(--papel); display: grid; place-items: center; font-weight: 800; }
+.parada-nome { flex: 1; display: flex; align-items: center; gap: 0.6rem; font-weight: 700; cursor: pointer; }
+.parada-nome input { width: 1.2rem; height: 1.2rem; padding: 0; accent-color: var(--pinho); }
+.visitada .parada-nome { text-decoration: line-through; color: var(--suave); }
+.visitada .numero { background: var(--girassol); color: var(--pinho); }
+.controles { display: flex; gap: 0.25rem; }
+.controles button { width: 2rem; height: 2rem; border: 1px solid var(--linha); border-radius: 10px; background: transparent; color: var(--tinta); }
+.trecho { display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: 0.9rem; margin: 0 0 0.5rem; }
+.trecho span { background: rgba(242, 181, 68, 0.28); border-radius: 999px; padding: 0.2rem 0.8rem; }
+.trecho a { margin-left: 0.6rem; color: var(--pinho); font-weight: 700; }
+.nota { font-size: 0.85rem; color: var(--suave); }
+.so-impressao { display: none; }
+
+/* Ao salvar em PDF: escondo botões e deixo só o roteiro */
+@media print {
+  body { background: white; }
+  .nao-imprimir { display: none !important; }
+  .so-impressao { display: block; margin-bottom: 1rem; }
+  .parada { break-inside: avoid; }
+}

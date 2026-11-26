@@ -1,0 +1,19 @@
+# Tudo que é segredo (senha, chaves) vem de variáveis de ambiente.
+# Assim nada disso vai parar no GitHub.
+server:
+  port: ${PORT:8080}        # o Render define a PORT sozinho
+
+spring:
+  datasource:
+    url: ${DB_URL}          # formato: jdbc:postgresql://HOST:5432/NOME_DO_BANCO
+    username: ${DB_USER}
+    password: ${DB_SENHA}
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: always          # cria as tabelas toda vez que o sistema sobe
+      schema-locations: classpath:schema-postgres.sql
+
+chaves:
+  ors: ${ORS_CHAVE}                  # OpenRouteService (tempo de trajeto e busca de endereço)
+  opentripmap: ${OPENTRIPMAP_CHAVE}  # OpenTripMap (pontos turísticos)
