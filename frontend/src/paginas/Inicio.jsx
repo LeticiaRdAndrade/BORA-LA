@@ -1,35 +1,47 @@
-import { useState } from "react";
-import { NOME } from "../config.js";
+import FormViagem from "../componentes/FormViagem.jsx";
+import Logo from "../componentes/Logo.jsx";
 
-// Primeira tela: a pessoa diz o nome da viagem e a cidade
+// Fotos da colagem: cartões-postais de cidades brasileiras, com fotos do Wikimedia Commons
+// ("?width=600" pede uma versão menor, que carrega mais rápido)
+const commons = "https://commons.wikimedia.org/wiki/Special:FilePath/";
+const destinos = [
+  ["Santos", commons + "Jardins%20da%20Orla%20de%20Santos%20e%20sua%20ciclovia.jpg?width=600"],
+  ["Gramado", commons + "Lago%20Negro12.jpg?width=600"],
+  ["Rio de Janeiro", commons + "Aerial%20view%20of%20Copacabana%20beach.jpg?width=600"],
+];
+
+// Primeira tela: a pessoa diz o nome da viagem e a cidade.
+// Em cima, a mesma faixa roxa com o logo que as outras telas têm, para o site todo combinar
 export default function Inicio({ aoCriar }) {
-  const [nome, setNome] = useState("");
-  const [cidade, setCidade] = useState("");
-  const [erro, setErro] = useState("");
-
-  function enviar(e) {
-    e.preventDefault();
-    setErro("");
-    aoCriar(nome, cidade).catch(() => setErro("Não consegui criar a viagem. Tente de novo."));
-  }
-
   return (
+    <>
+    <header className="cabecalho cabecalho-inicio">
+      <div className="cabecalho-topo">
+        <Logo claro />
+        <span className="etiqueta-logo">monte seu roteiro de viagem</span>
+      </div>
+    </header>
     <main className="inicio">
-      <p className="marca">{NOME}</p>
-      <h1>Para onde você vai?</h1>
-      <p className="sub">Escolha os lugares que quer conhecer, deixe na ordem que preferir e veja quanto tempo leva de um para o outro.</p>
-      <form className="painel" onSubmit={enviar}>
-        <label>
-          Nome da viagem
-          <input value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Fim de semana na praia" required />
-        </label>
-        <label>
-          Cidade
-          <input value={cidade} onChange={(e) => setCidade(e.target.value)} placeholder="Santos" required />
-        </label>
-        <button className="botao">Criar viagem</button>
-        {erro && <p className="erro">{erro}</p>}
-      </form>
+      <div>
+        <h1>Para onde você <span className="destaque">vai</span>?</h1>
+        <p className="sub">Escolha os lugares que quer conhecer, deixe na ordem que preferir e veja quanto tempo leva de um para o outro.</p>
+        <FormViagem textoBotao="Criar viagem" aoSalvar={aoCriar} />
+        <ul className="vantagens">
+          <li>Sem cadastro</li>
+          <li>Tempo a pé e de carro</li>
+          <li>Roteiro em PDF</li>
+        </ul>
+      </div>
+      {/* colagem de cartões-postais em leque (só para enfeitar): cada destino é uma foto com o nome embaixo */}
+      <div className="colagem" aria-hidden="true">
+        {destinos.map(([cidade, foto], i) => (
+          <figure key={cidade} className={"postal postal-" + i}>
+            <img src={foto} alt="" />
+            <figcaption>📍 {cidade}</figcaption>
+          </figure>
+        ))}
+      </div>
     </main>
+    </>
   );
 }

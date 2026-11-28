@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.roteiro.model.NovaViagem;
 import com.roteiro.model.Viagem;
 
 import jakarta.annotation.PostConstruct;
@@ -27,9 +28,13 @@ public class ViagemDAO {
     }
 
     // Insere a viagem e já devolve o id que o banco gerou (RETURNING id)
-    public int inserir(Viagem v) {
+    public int inserir(NovaViagem v) {
         String sql = "INSERT INTO viagem(nome, cidade) VALUES(?, ?) RETURNING id";
         return jdbc.queryForObject(sql, Integer.class, v.nome(), v.cidade());
+    }
+
+    public void editar(int id, NovaViagem v) {
+        jdbc.update("UPDATE viagem SET nome = ?, cidade = ? WHERE id = ?", v.nome(), v.cidade(), id);
     }
 
     // Busca uma viagem pelo id; devolve null se ela não existir

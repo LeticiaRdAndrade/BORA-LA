@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.roteiro.model.EdicaoPonto;
 import com.roteiro.model.Lugar;
 import com.roteiro.model.Ponto;
 import com.roteiro.service.PontoService;
@@ -37,6 +38,18 @@ public class PontoController {
     @PutMapping("/viagens/{id}/ordem")
     public void reordenar(@RequestBody List<Integer> ids) {
         service.reordenar(ids);
+    }
+
+    // Botão "Otimizar rota": o back-end reorganiza os pontos pelo mais próximo
+    @PutMapping("/viagens/{id}/otimizar")
+    public void otimizar(@PathVariable int id) {
+        service.otimizar(id);
+    }
+
+    // Formulário de edição: o React manda {nome, anotacao}
+    @PutMapping("/pontos/{id}")
+    public void editar(@PathVariable int id, @RequestBody EdicaoPonto edicao) {
+        service.editar(id, edicao);
     }
 
     @DeleteMapping("/pontos/{id}")

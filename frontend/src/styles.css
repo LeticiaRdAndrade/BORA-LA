@@ -1,83 +1,227 @@
-/* Cores e fontes do site, todas num lugar só */
+/* Cores e fontes do site, todas num lugar só. São as cores do logo do Bora Lá */
 :root {
-  --nevoa: #e9efe6;    /* fundo da página */
-  --papel: #fffefa;    /* cartões e campos */
-  --pinho: #1f4a40;    /* cor principal */
-  --tinta: #1d2825;    /* texto */
-  --suave: #5b6b64;    /* texto secundário */
-  --linha: #cfd9cc;    /* bordas */
-  --girassol: #f2b544; /* destaque */
-  --ferrugem: #b3472d; /* erros */
+  --roxo: #2a1a5e;       /* letras do logo, cabeçalho e títulos */
+  --ceu: #4cc2ff;        /* aviãozinho do logo e detalhes */
+  --ceu-claro: #8ad8ff;
+  --coral: #ff5b2e;      /* alfinete do logo e botão principal */
+  --laranja: #ff8a3d;
+  --sol: #ffc83d;        /* etiqueta "monte seu roteiro de viagem" */
+  --areia: #fff8f0;      /* fundo da página */
+  --papel: #ffffff;      /* cartões e campos */
+  --tinta: #1f1640;      /* texto */
+  --suave: #6a6187;      /* texto secundário */
+  --linha: #ece4d8;      /* bordas */
+  --erro: #d6383a;
+  --sombra: 0 1px 2px rgba(42, 26, 94, 0.06), 0 10px 28px -12px rgba(42, 26, 94, 0.22);
+  --sombra-forte: 0 2px 4px rgba(42, 26, 94, 0.06), 0 24px 48px -16px rgba(42, 26, 94, 0.35);
+  --degrade-botao: linear-gradient(135deg, var(--coral), var(--laranja));
+  --largura: 1080px;
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--nevoa); color: var(--tinta); font: 400 1rem/1.55 "Nunito", system-ui, sans-serif; }
-h1, h2, h3, .marca { font-family: "Bricolage Grotesque", "Nunito", system-ui, sans-serif; line-height: 1.15; }
-h2 { color: var(--pinho); font-size: 1.6rem; margin: 0; }
-main { max-width: 760px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
-:focus-visible { outline: 3px solid var(--girassol); outline-offset: 2px; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; min-height: 100vh; color: var(--tinta); font: 400 1rem/1.6 "Plus Jakarta Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  /* manchas bem suaves de laranja e de azul-céu no fundo */
+  background: radial-gradient(circle at 100% 0%, #ffe1d6 0, transparent 35%),
+              radial-gradient(circle at 0% 100%, #dcf2ff 0, transparent 40%), var(--areia);
+  background-attachment: fixed;
+}
+::selection { background: var(--sol); color: var(--roxo); }
+h1, h2, h3, .logo { font-family: "Bricolage Grotesque", system-ui, sans-serif; line-height: 1.08; letter-spacing: -0.02em; }
+h2 { color: var(--roxo); font-size: clamp(1.6rem, 4vw, 2.1rem); margin: 0 0 0.3rem; }
+main { max-width: var(--largura); margin: 0 auto; padding: 2rem 1.25rem 5rem; }
+main > section { animation: surge 0.4s ease both; }
+:focus-visible { outline: 3px solid var(--ceu-claro); outline-offset: 3px; }
+.aviso, .sub { color: var(--suave); }
+.aviso { margin: 0; padding: 0.4rem 0; }
+@keyframes surge { from { opacity: 0; transform: translateY(12px); } }
 
 /* Botões e campos */
 button { font: inherit; cursor: pointer; }
-.botao, .botao-leve { border-radius: 999px; padding: 0.6rem 1.2rem; font-weight: 700; border: 1.5px solid var(--pinho); }
-.botao { background: var(--pinho); color: var(--papel); }
-.botao-leve { background: transparent; color: var(--pinho); }
-button:disabled { opacity: 0.45; cursor: default; }
-input { font: inherit; background: var(--papel); border: 1.5px solid var(--linha); border-radius: 12px; padding: 0.7rem 0.9rem; width: 100%; }
+.botao, .botao-leve { border-radius: 999px; padding: 0.7rem 1.4rem; font-weight: 700; transition: transform 0.2s, box-shadow 0.2s, background 0.2s, filter 0.2s; }
+.botao { border: 0; color: white; background: var(--degrade-botao); box-shadow: 0 10px 22px -10px rgba(255, 91, 46, 0.8); }
+.botao:hover:not(:disabled) { transform: translateY(-2px); filter: saturate(1.15); box-shadow: 0 14px 28px -10px rgba(255, 91, 46, 0.9); }
+.botao:active:not(:disabled) { transform: translateY(0); }
+.botao-leve { background: var(--papel); color: var(--roxo); border: 1.5px solid var(--linha); }
+.botao-leve:hover:not(:disabled) { border-color: var(--roxo); }
+button:disabled { opacity: 0.45; cursor: default; box-shadow: none; }
+input { font: inherit; color: var(--tinta); background: var(--papel); border: 1.5px solid var(--linha); border-radius: 14px; padding: 0.8rem 1rem; width: 100%; transition: border-color 0.2s, box-shadow 0.2s; }
+input:hover { border-color: #d9cfc0; }
+input:focus { outline: none; border-color: var(--ceu); box-shadow: 0 0 0 4px rgba(76, 194, 255, 0.15); }
+input::placeholder { color: #a7afbd; }
+.acoes { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.painel { background: var(--papel); border: 1px solid var(--linha); border-radius: 28px; padding: 1.75rem; display: grid; gap: 1.1rem; box-shadow: var(--sombra-forte); }
+.painel label { display: grid; gap: 0.4rem; font-weight: 700; font-size: 0.92rem; color: var(--roxo); }
+.erro { color: var(--erro); margin: 0; }
 
-/* Cabeçalho com as abas */
-.cabecalho { background: var(--pinho); color: var(--papel); padding: 1rem max(1.25rem, calc((100% - 760px) / 2)); }
+/* Logo "bora lá": o avião fica em cima do "a" (no lugar do acento) e o alfinete faz o papel do "!".
+   O tamanho de tudo é em "em", então para aumentar o logo basta mudar o font-size. */
+.logo { display: inline-flex; align-items: flex-end; margin: 0; font-size: 2rem; font-weight: 800; letter-spacing: -0.05em; line-height: 0.8; color: var(--roxo); --aviao: var(--ceu); --furo: var(--areia); }
+.logo.claro { color: var(--areia); --aviao: var(--sol); --furo: var(--roxo); }
+.logo-a { position: relative; }
+.logo-a svg { position: absolute; width: 0.66em; left: 0.02em; top: -0.17em; }
+.logo-pino { width: 0.38em; height: 0.95em; margin-left: 0.06em; }
+.cabecalho-inicio { padding-bottom: 1.4rem; } /* na tela inicial a faixa roxa só tem o logo, então é mais baixa */
+.cabecalho-inicio .cabecalho-topo { justify-content: flex-start; } /* a frase fica logo ao lado do logo */
+.bl-loading .logo { font-size: 56px; margin-top: 4px; }
+/* a frase ao lado do logo é só texto (sem fundo, para não parecer botão), separada por um tracinho */
+.etiqueta-logo { color: var(--sol); font-weight: 600; padding-left: 1rem; border-left: 1px solid rgba(255, 255, 255, 0.3); }
+
+/* Cabeçalho roxo, com um brilho de pôr do sol no canto */
+.cabecalho {
+  position: relative; overflow: hidden; color: white;
+  padding: 1.4rem max(1.25rem, calc((100% - var(--largura)) / 2 + 1.25rem)) 2.75rem;
+  background: linear-gradient(120deg, var(--roxo) 0%, #3b2585 100%);
+}
+.cabecalho::before { content: ""; position: absolute; right: -80px; top: -140px; width: 380px; height: 380px; border-radius: 50%; pointer-events: none; background: radial-gradient(circle, rgba(255, 200, 61, 0.45), rgba(255, 91, 46, 0.18) 55%, transparent 70%); }
+.cabecalho > * { position: relative; }
 .cabecalho-topo { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
-.cabecalho .marca { color: var(--girassol); font-weight: 700; margin: 0; }
-.viagem-info { margin: 0; }
-.cabecalho .botao-leve { color: var(--papel); border-color: rgba(255, 254, 250, 0.5); }
-.abas { display: flex; gap: 0.5rem; margin-top: 1rem; overflow-x: auto; }
-.aba { background: transparent; border: 0; color: var(--papel); padding: 0.5rem 1rem; border-radius: 999px; font-weight: 700; white-space: nowrap; }
-.aba.ativa { background: var(--girassol); color: var(--pinho); }
+.vidro { background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.22); backdrop-filter: blur(8px); }
+.cabecalho .botao-leve { color: white; padding: 0.45rem 1.05rem; font-size: 0.88rem; background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.25); }
+.cabecalho .botao-leve:hover { background: rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255, 0.5); }
+.cabecalho .painel { margin: 1.5rem 0 0; color: var(--tinta); max-width: 480px; }
+.cabecalho .painel .botao-leve { color: var(--roxo); background: var(--papel); border-color: var(--linha); }
+.etiqueta { text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.75rem; font-weight: 700; color: var(--sol); margin: 2rem 0 0.4rem; }
+.viagem-titulo { display: flex; align-items: center; gap: 0.6rem 1rem; flex-wrap: wrap; }
+.viagem-titulo h1 { font-size: clamp(2.1rem, 6vw, 3.4rem); margin: 0; }
+.cidade { padding: 0.3rem 0.95rem; border-radius: 999px; font-weight: 600; }
+.lapis { background: none; border: 0; color: var(--sol); font-weight: 700; padding: 0.3rem; }
+.lapis:hover { text-decoration: underline; text-underline-offset: 4px; }
 
-/* Tela inicial */
-.inicio { padding-top: 4rem; }
-.inicio .marca { color: var(--pinho); font-weight: 700; margin: 0; }
-h1 { color: var(--pinho); font-size: clamp(2.2rem, 8vw, 3.6rem); margin: 0.5rem 0 1rem; }
-.sub { color: var(--suave); font-size: 1.1rem; max-width: 34rem; margin: 0 0 2rem; }
-.painel { background: var(--papel); border: 1px solid var(--linha); border-radius: 24px; padding: 1.5rem; display: grid; gap: 1rem; }
-.painel label { display: grid; gap: 0.35rem; font-weight: 700; }
-.erro { color: var(--ferrugem); margin: 0; }
+/* Abas: ficam grudadas no topo ao rolar, com fundo de vidro desfocado */
+.abas {
+  position: sticky; top: 0; z-index: 10; display: flex; gap: 0.35rem; overflow-x: auto;
+  padding: 0.7rem max(1.25rem, calc((100% - var(--largura)) / 2 + 1.25rem));
+  background: rgba(255, 248, 239, 0.82); backdrop-filter: blur(14px); border-bottom: 1px solid var(--linha);
+}
+.aba { background: transparent; border: 0; color: var(--suave); padding: 0.55rem 1.1rem; border-radius: 999px; font-weight: 700; white-space: nowrap; transition: background 0.2s, color 0.2s; }
+.aba:hover { color: var(--roxo); background: rgba(42, 26, 94, 0.06); }
+.aba.ativa { background: var(--roxo); color: white; }
+.contador { background: var(--coral); color: white; border-radius: 999px; padding: 0.05rem 0.5rem; font-size: 0.75rem; margin-left: 0.45rem; }
 
-/* Explorar e Digitar */
-.busca { display: flex; gap: 0.5rem; margin: 1rem 0; }
-.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1rem; }
-.cartao { background: var(--papel); border: 1px solid var(--linha); border-radius: 18px; padding: 1rem; display: flex; flex-direction: column; justify-content: space-between; gap: 0.8rem; }
-.cartao h3 { margin: 0; font-size: 1.05rem; }
-.aviso { color: var(--suave); padding: 0.5rem 0; }
+/* Tela inicial: texto e formulário de um lado, a colagem de fotos do outro */
+.inicio { display: grid; gap: 3rem; align-items: center; padding-top: 2.5rem; }
+@media (min-width: 820px) { .inicio { grid-template-columns: 1.1fr 0.9fr; padding-top: 3.5rem; } }
+.inicio h1 { color: var(--roxo); font-size: clamp(2.2rem, 6vw, 3.4rem); margin: 0 0 0.8rem; }
+.destaque { background: var(--degrade-botao); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.sub { font-size: 1.12rem; max-width: 34rem; margin: 0 0 2rem; }
+.vantagens { list-style: none; padding: 0; margin: 1.5rem 0 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; color: var(--suave); font-size: 0.92rem; font-weight: 600; }
+.vantagens li::before { content: "✓"; color: var(--coral); font-weight: 800; margin-right: 0.4rem; }
+/* Colagem da tela inicial: três "cartões-postais" de cidades brasileiras em leque. O do meio fica na frente
+   e mais alto; os dos lados ficam mais baixos, então o nome embaixo deles aparece abaixo do cartão da frente.
+   Uso "rotate" separado do "transform" para a inclinação não sumir quando a animação "flutua" mexe no transform */
+.colagem { position: relative; width: min(100%, 460px); height: 390px; margin: 0 auto; }
+.postal { position: absolute; width: 46%; margin: 0; padding: 10px 10px 0; background: var(--papel); border-radius: 22px; box-shadow: var(--sombra-forte); animation: flutua 5s ease-in-out infinite; transition: scale 0.3s; }
+.postal img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 14px; background: var(--linha); }
+.postal figcaption { padding: 0.6rem 0.2rem 0.75rem; text-align: center; font-weight: 700; color: var(--roxo); }
+.postal-0 { left: 0; top: 70px; rotate: -8deg; }
+.postal-1 { right: 0; top: 70px; rotate: 8deg; animation-delay: -1.7s; }
+.postal-2 { left: 27%; top: 0; z-index: 1; animation-delay: -3.4s; }
+.postal:hover { z-index: 2; scale: 1.05; } /* o cartão que o mouse toca vem para a frente */
+@keyframes flutua { 50% { transform: translateY(-6px); } }
 
-/* Roteiro: uma trilha vertical com as paradas numeradas */
+/* Carregando (Carregando.jsx) e o rastro pontilhado (também usado no Vazio.jsx) */
+.bl-loading.tela-cheia { position: fixed; inset: 0; z-index: 9999; background: var(--areia); }
+.bl-loading { padding: 2rem 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; font-family: "Bricolage Grotesque", system-ui, sans-serif; color: var(--roxo); }
+.bl-rastro { fill: none; stroke: var(--rastro, var(--roxo)); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 0.5 9; animation: rastro 0.8s linear infinite; }
+/* círculo pontilhado que gira; o avião fica no topo, girado 37° para o bico apontar na direção do giro */
+.giro { position: relative; width: 80px; height: 80px; margin: 14px 0 6px; border: 3px dotted var(--roxo); border-radius: 50%; animation: girar 1.1s linear infinite; }
+.giro-aviao { position: absolute; top: -15px; left: 50%; width: 30px; margin-left: -15px; transform: rotate(37deg); }
+@keyframes girar { to { transform: rotate(360deg); } }
+.bl-mensagem { margin: 8px 0 0; font-size: 18px; font-weight: 600; opacity: 0.8; }
+.bl-pontos span { animation: piscar 1.2s infinite; opacity: 0; }               /* os três pontinhos aparecem um a um */
+.bl-pontos span:nth-child(2) { animation-delay: 0.2s; }
+.bl-pontos span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes rastro { to { stroke-dashoffset: -19; } }
+@keyframes piscar { 0%, 20% { opacity: 0; } 40%, 100% { opacity: 1; } }
+
+/* Explorar e Buscar pelo nome */
+.filtros { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.25rem 0 1.5rem; }
+.filtro { background: var(--papel); border: 1.5px solid var(--linha); color: var(--roxo); border-radius: 999px; padding: 0.45rem 1.05rem; font-weight: 600; transition: border-color 0.2s, transform 0.2s, background 0.2s; }
+.filtro:hover { border-color: var(--roxo); transform: translateY(-1px); }
+.filtro.ativo { background: var(--roxo); border-color: var(--roxo); color: white; box-shadow: var(--sombra); }
+.busca { display: flex; gap: 0.5rem; margin: 1.25rem 0; max-width: 620px; }
+.grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; }
+/* cada cartão entra um pouquinho depois do anterior (--i é a posição dele na lista) */
+.cartao {
+  background: var(--papel); border: 1px solid rgba(42, 26, 94, 0.06); border-radius: 24px; overflow: hidden;
+  display: flex; flex-direction: column; box-shadow: var(--sombra); transition: transform 0.25s, box-shadow 0.25s;
+  animation: surge 0.45s ease both; animation-delay: calc(var(--i, 0) * 60ms);
+}
+.cartao:hover { transform: translateY(-6px); box-shadow: var(--sombra-forte); }
+.capa { position: relative; height: 150px; display: grid; place-items: center; overflow: hidden; font-size: 2.6rem; }
+/* a foto preenche a capa inteira sem distorcer (cover) e aumenta um pouco quando o mouse passa */
+.capa img { width: 100%; height: 100%; object-fit: cover; }
+.capa span, .capa img { transition: transform 0.3s; }
+.cartao:hover .capa span { transform: scale(1.15) rotate(-4deg); }
+.cartao:hover .capa img { transform: scale(1.06); }
+.tom-ceu { background: linear-gradient(135deg, var(--ceu), var(--ceu-claro)); }
+.tom-coral { background: var(--degrade-botao); }
+.tom-sol { background: linear-gradient(135deg, var(--sol), #ffd98a); }
+.tom-roxo { background: linear-gradient(135deg, var(--roxo), #4a33a0); }
+.cartao-corpo { flex: 1; padding: 1.1rem 1.2rem 1.2rem; display: flex; flex-direction: column; justify-content: space-between; gap: 1rem; }
+.cartao h3 { margin: 0 0 0.2rem; font-size: 1.12rem; color: var(--roxo); }
+.cartao button { padding: 0.7rem 1rem; white-space: nowrap; }
+.cartao .botao-leve:disabled { opacity: 1; color: var(--roxo); border-color: rgba(76, 194, 255, 0.3); background: rgba(76, 194, 255, 0.15); }
+
+/* Roteiro: uma trilha pontilhada com as paradas numeradas */
+.vazio { text-align: center; padding: 2.5rem 0; }
+.vazio h3 { color: var(--roxo); font-size: 1.35rem; margin: 0.8rem 0 0.25rem; }
+.vazio .aviso { max-width: 30rem; margin: 0 auto; }
+.vazio-ilustra { animation: flutua 3s ease-in-out infinite; } /* o desenho flutua de leve */
+.vazio-botao { margin-top: 1.25rem; }
 .roteiro-topo { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-.acoes { display: flex; gap: 0.5rem; }
-.trilha { list-style: none; margin: 1.5rem 0 1rem; padding: 0; }
-.trilha li { position: relative; padding-left: 3rem; }
-.trilha li::before { content: ""; position: absolute; left: calc(1.1rem - 1.5px); top: 0; bottom: 0; width: 3px; background: var(--linha); }
+.trilha { list-style: none; margin: 1.75rem 0 1rem; padding: 0; max-width: 760px; }
+.trilha li { position: relative; padding-left: 3.25rem; animation: surge 0.4s ease both; }
+.trilha li::before { content: ""; position: absolute; left: calc(1.2rem - 1.5px); top: 0; bottom: 0; width: 3px; background: repeating-linear-gradient(to bottom, #d9cfc0 0 6px, transparent 6px 12px); }
 .trilha li:first-child::before { top: 1.6rem; }
 .trilha li:last-child::before { bottom: auto; height: 1.6rem; }
 .trilha li:only-child::before { display: none; }
-.parada { position: relative; display: flex; align-items: center; gap: 0.75rem; background: var(--papel); border: 1px solid var(--linha); border-radius: 16px; padding: 0.75rem 1rem; margin: 0.75rem 0; }
-.numero { position: absolute; left: -3rem; top: 50%; transform: translateY(-50%); z-index: 1; width: 2.2rem; height: 2.2rem; border-radius: 50%; background: var(--pinho); color: var(--papel); display: grid; place-items: center; font-weight: 800; }
-.parada-nome { flex: 1; display: flex; align-items: center; gap: 0.6rem; font-weight: 700; cursor: pointer; }
-.parada-nome input { width: 1.2rem; height: 1.2rem; padding: 0; accent-color: var(--pinho); }
+.parada { position: relative; display: flex; align-items: center; gap: 0.75rem; background: var(--papel); border: 1px solid rgba(42, 26, 94, 0.06); border-radius: 20px; padding: 0.95rem 1.1rem; margin: 0.8rem 0; box-shadow: var(--sombra); transition: box-shadow 0.2s; }
+.parada:hover { box-shadow: var(--sombra-forte); }
+.numero { position: absolute; left: -3.25rem; top: 50%; transform: translateY(-50%); z-index: 1; width: 2.4rem; height: 2.4rem; border-radius: 50%; background: var(--degrade-botao); color: white; display: grid; place-items: center; font-weight: 800; box-shadow: 0 0 0 5px var(--areia); }
+.parada-texto { flex: 1; }
+.parada-nome { display: flex; align-items: center; gap: 0.6rem; font-weight: 700; color: var(--roxo); cursor: pointer; }
+.parada-nome input { width: 1.2rem; height: 1.2rem; padding: 0; accent-color: var(--roxo); }
+.anotacao { margin: 0.15rem 0 0 1.8rem; font-size: 0.9rem; color: var(--suave); font-style: italic; }
+.endereco { margin: 0.2rem 0 0.35rem; font-size: 0.88rem; color: var(--suave); }
+.link-mapa { font-size: 0.88rem; font-weight: 700; color: var(--roxo); text-decoration: none; }
+.link-mapa:hover { text-decoration: underline; text-underline-offset: 3px; }
+.parada-texto > :not(.parada-nome) { margin-left: 1.8rem; }
+.form-edicao { flex: 1; display: grid; gap: 0.5rem; }
+.visitada { opacity: 0.75; }
 .visitada .parada-nome { text-decoration: line-through; color: var(--suave); }
-.visitada .numero { background: var(--girassol); color: var(--pinho); }
-.controles { display: flex; gap: 0.25rem; }
-.controles button { width: 2rem; height: 2rem; border: 1px solid var(--linha); border-radius: 10px; background: transparent; color: var(--tinta); }
-.trecho { display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: 0.9rem; margin: 0 0 0.5rem; }
-.trecho span { background: rgba(242, 181, 68, 0.28); border-radius: 999px; padding: 0.2rem 0.8rem; }
-.trecho a { margin-left: 0.6rem; color: var(--pinho); font-weight: 700; }
-.nota { font-size: 0.85rem; color: var(--suave); }
+.visitada .numero { background: var(--ceu); color: var(--roxo); }
+.controles { display: flex; gap: 0.3rem; }
+.controles button { width: 2.1rem; height: 2.1rem; border: 1px solid var(--linha); border-radius: 12px; background: var(--papel); color: var(--roxo); transition: background 0.2s, border-color 0.2s; }
+.controles button:hover:not(:disabled) { background: var(--areia); border-color: var(--roxo); }
+.trecho { display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: 0.88rem; margin: 0 0 0.5rem; }
+.trecho span { background: rgba(76, 194, 255, 0.2); color: var(--roxo); font-weight: 600; border-radius: 999px; padding: 0.25rem 0.85rem; }
+.nota { font-size: 0.82rem; color: var(--suave); margin-top: 2rem; }
 .so-impressao { display: none; }
 
+/* Para quem pediu ao sistema menos movimento na tela: desligo as animações */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .bl-pontos span { opacity: 1; }
+}
+
 /* Ao salvar em PDF: escondo botões e deixo só o roteiro */
+@page { margin: 14mm; }
 @media print {
+  /* por padrão o navegador não imprime cores de fundo; aqui eu peço para imprimir igual à tela */
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; animation: none !important; }
   body { background: white; }
+  main { padding: 0; max-width: none; }
   .nao-imprimir { display: none !important; }
-  .so-impressao { display: block; margin-bottom: 1rem; }
-  .parada { break-inside: avoid; }
+  .so-impressao { display: block; }
+  /* capa roxa com o logo, igual ao banner do bora lá! */
+  .capa-pdf { background: linear-gradient(120deg, var(--roxo), #3b2585); color: white; border-radius: 22px; padding: 1.5rem 1.75rem; margin-bottom: 1.25rem; }
+  .capa-pdf .logo { --furo: var(--roxo); }
+  .capa-pdf h1 { font-size: 2.3rem; margin: 1.1rem 0 0.35rem; }
+  .capa-pdf p { margin: 0; opacity: 0.85; }
+  .parada { break-inside: avoid; box-shadow: none; }
+  .rodape-pdf { margin-top: 1.5rem; padding-top: 0.75rem; border-top: 2px dotted var(--linha); text-align: center; font-size: 0.8rem; color: var(--suave); }
 }

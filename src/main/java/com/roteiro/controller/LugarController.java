@@ -18,15 +18,21 @@ public class LugarController {
     @Autowired
     LugarService service;
 
-    // Tela "Explorar": pontos turísticos de uma cidade
+    // Tela "Explorar": pontos turísticos de uma cidade, filtrados pelo tipo (parques, museus...)
     @GetMapping("/explorar")
-    public List<Lugar> explorar(@RequestParam String cidade) {
-        return service.explorar(cidade);
+    public List<Lugar> explorar(@RequestParam String cidade, @RequestParam(defaultValue = "populares") String tipo) {
+        return service.explorar(cidade, tipo);
     }
 
-    // Tela "Digitar um lugar": acha um lugar específico pelo texto
+    // Formulário da viagem: sugestões de cidade enquanto a pessoa digita
+    @GetMapping("/cidades")
+    public List<String> cidades(@RequestParam String texto) {
+        return service.cidades(texto);
+    }
+
+    // Tela "Buscar pelo nome": acha lugares pelo nome, perto da cidade da viagem
     @GetMapping("/buscar")
-    public Lugar buscar(@RequestParam String texto) {
-        return service.buscar(texto);
+    public List<Lugar> buscar(@RequestParam String texto, @RequestParam String cidade) {
+        return service.buscar(texto, cidade);
     }
 }

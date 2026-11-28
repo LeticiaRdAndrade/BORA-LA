@@ -27,10 +27,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
-        <!-- acesso ao banco (JdbcTemplate) -->
+        <!-- acesso ao banco só com JDBC (JdbcTemplate); NÃO uso JPA nem Hibernate -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jdbc</artifactId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
         <!-- driver do PostgreSQL -->
         <dependency>

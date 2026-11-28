@@ -1,63 +1,73 @@
-# Meu Roteiro
+# bora lá!
 
-Site para montar o roteiro de uma viagem: explorar pontos turísticos de uma cidade (ou digitar um lugar), escolher a ordem, marcar o que já foi visitado, ver o tempo entre os pontos (a pé e de carro), chamar um Uber e salvar em PDF.
+Site para montar o roteiro de uma viagem. A pessoa cria a viagem com um nome e a cidade e escolhe os pontos turísticos que quer conhecer. Depois organiza a ordem e vê quanto tempo leva de um lugar para o outro, a pé e de carro. No final, pode salvar o roteiro em PDF.
 
-**Tecnologias:** Java 21, Maven, Spring Boot, PostgreSQL (Render) e React (Vite).
+Trabalho da disciplina de Programação Orientada a Objetos (FATEC).
 
-## Estrutura
+## O que dá para fazer
+
+- **Explorar:** os lugares mais visitados da cidade (até 10), com foto e nome em português, e filtros por tipo: parques, museus, cultura, mirantes, praias, catedrais, shoppings e diversão.
+- **Buscar pelo nome:** acha um lugar específico perto da cidade da viagem.
+- **Meu roteiro:**
+  - mudar a ordem (↑ ↓);
+  - marcar como visitado;
+  - editar o nome e uma anotação;
+  - remover;
+  - calcular o tempo entre os pontos;
+  - **otimizar a rota**: a partir do primeiro ponto, vai sempre para o mais próximo;
+  - salvar em PDF com o endereço de cada lugar.
+- **Sem cadastro:** o número da viagem fica no link (ex.: `/#7`). Quem tem o link abre a viagem.
+
+## Tecnologias
+
+- **Back-end:** Java 21, Spring Boot e Maven.
+- **Banco:** PostgreSQL, acessado com JDBC (`JdbcTemplate`), sem JPA.
+- **Front-end:** React com Vite.
+- **Publicação:** Dockerfile e Render (o site e o banco).
+
+## Organização do código
 
 ```
 src/main/java/com/roteiro/
-  controller/   recebe os pedidos do site (rotas /api/...)
-  service/      regras; chama o DAO e as APIs externas
-  dao/          só SQL (JdbcTemplate)
-  model/        classes que guardam dados (records)
-  transporte/   MeioTransporte, APe e Carro (herança)
-src/main/resources/
-  application.yaml        configuração (lê tudo de variáveis de ambiente)
-  schema-postgres.sql     cria as tabelas
+  controller/   recebe os pedidos do site (/api/...)
+  service/      regras do sistema; cada API externa tem o seu service
+  dao/          SQL com JdbcTemplate
+  model/        records com os dados (inclusive o formato das respostas das APIs)
+  transporte/   MeioTransporte (abstrata), APe e Carro
 frontend/src/
-  paginas/      telas (Inicio, Explorar, Digitar, Roteiro)
-  componentes/  pedaços reutilizáveis (Cabecalho, CartaoLugar)
+  paginas/      Inicio, Explorar, Digitar (buscar pelo nome), Roteiro
+  componentes/  Cabecalho, CartaoLugar, FormViagem, FormEdicao, Logo, Carregando, Vazio
   api.js        todas as chamadas ao back-end
-  styles.css    todo o visual
-Dockerfile      compila o React e o Java e roda o .jar
 ```
 
-## Onde apliquei cada conceito
+## CRUD
+
+| Operação | Onde |
+|---|---|
+| Create | criar viagem; "Adicionar ao roteiro" |
+| Read | abrir a viagem pelo link; lista de pontos em "Meu roteiro" |
+| Update | editar viagem (nome e cidade); editar ponto (✎); visitado; ordem; otimizar rota |
+| Delete | botão ✕ de cada ponto |
+
+## Programação orientada a objetos
 
 | Conceito | Onde |
 |---|---|
-| Abstração | `transporte/MeioTransporte.java` (classe e métodos abstratos) |
-| Herança | `APe` e `Carro` usam `extends MeioTransporte` |
-| Sobrescrita | `@Override` em `APe`, `Carro` e no `getLinkApp` do carro (Uber) |
-| Polimorfismo | `RotaService`: a lista `List<MeioTransporte>` guarda `APe` e `Carro` e chama os mesmos métodos |
+| Abstração | `MeioTransporte` é uma classe abstrata, com os métodos abstratos `getNome()` e `getPerfil()` |
+| Herança | `APe` e `Carro` fazem `extends MeioTransporte` |
+| Sobrescrita | `APe` e `Carro` usam `@Override` para escrever `getNome()` e `getPerfil()` do seu jeito |
+| Polimorfismo | no `RotaService`, a lista `List<MeioTransporte>` guarda um `APe` e um `Carro`, e o mesmo código calcula os dois |
 | Sobrecarga | `RotaService.trechos(pontos)` e `trechos(pontos, escolhidos)` |
 
-## Variáveis de ambiente
+## APIs usadas
 
-| Nome | O que é |
+| API | Para quê |
 |---|---|
-| `DB_URL` | `jdbc:postgresql://HOST:5432/NOME_DO_BANCO` |
-| `DB_USER` | usuário do banco |
-| `DB_SENHA` | senha do banco |
-| `ORS_CHAVE` | chave gratuita do OpenRouteService (openrouteservice.org) |
-| `OPENTRIPMAP_CHAVE` | chave gratuita da OpenTripMap (dev.opentripmap.org/register) |
+| Geoapify | achar a cidade e o contorno dela, sugestões de cidade, lugares por tipo, busca e endereço completo |
+| OpenTripMap | lugares mais visitados e busca pelo nome |
+| Wikidata e Wikipédia | nome em português e foto dos lugares |
+| OpenRouteService | tempo a pé e de carro entre os pontos |
 
-## Rodar na minha máquina
-
-Precisa de JDK 21 e Node.js. Em dois terminais:
-
-```powershell
-# 1) back-end (PowerShell): defina as variáveis e rode
-$env:DB_URL="jdbc:postgresql://HOST:5432/NOME"; $env:DB_USER="..."; $env:DB_SENHA="..."
-$env:ORS_CHAVE="..."; $env:OPENTRIPMAP_CHAVE="..."
-.\mvnw spring-boot:run
-
-# 2) front-end
-cd frontend
-npm install
-npm run dev
-```
-
-Abra http://localhost:5173. Na máquina, use o endereço **externo** do banco do Render.
+As senhas e chaves não ficam no código. Elas vêm de variáveis de ambiente:
+- banco: `DB_URL`, `DB_USER`, `DB_SENHA`;
+- APIs: `ORS_CHAVE`, `OPENTRIPMAP_CHAVE`, `GEOAPIFY_CHAVE`.

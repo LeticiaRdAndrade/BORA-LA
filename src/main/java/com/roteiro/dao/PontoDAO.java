@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.roteiro.model.EdicaoPonto;
 import com.roteiro.model.Lugar;
 import com.roteiro.model.Ponto;
 
@@ -32,7 +33,7 @@ public class PontoDAO {
     // Transforma uma linha do banco em um objeto Ponto
     private static Ponto mapear(ResultSet rs, int linha) throws SQLException {
         return new Ponto(rs.getInt("id"), rs.getInt("viagem_id"), rs.getString("nome"),
-                rs.getDouble("lat"), rs.getDouble("lng"), rs.getInt("ordem"), rs.getBoolean("visitado"));
+                rs.getDouble("lat"), rs.getDouble("lng"), rs.getInt("ordem"), rs.getBoolean("visitado"), rs.getString("anotacao"), rs.getString("endereco"));
     }
 
     public List<Ponto> listar(int viagemId) {
@@ -41,9 +42,16 @@ public class PontoDAO {
 
     // O novo ponto entra no fim da lista: ordem = maior ordem atual + 1
     public void inserir(int viagemId, Lugar l) {
-        String sql = "INSERT INTO ponto(viagem_id, nome, lat, lng, ordem) VALUES(?, ?, ?, ?, "
+        String sql = "INSERT INTO ponto(viagem_id, nome, lat, lng, endereco, ordem) VALUES(?, ?, ?, ?, ?, "
                 + "(SELECT COALESCE(MAX(ordem), 0) + 1 FROM ponto WHERE viagem_id = ?))";
-        jdbc.update(sql, viagemId, l.nome(), l.lat(), l.lng(), viagemId);
+        String endereco = l.endereco() == null ? "" : l.endereco(); // a coluna não aceita nulo
+        jdbc.update(sql, viagemId, l.nome(), l.lat(), l.lng(), endereco, viagemId);
+    }
+
+    // UPDATE do formulário de edição: troca o nome e a anotação do ponto
+    public void editar(int id, EdicaoPonto e) {
+        String anotacao = e.anotacao() == null ? "" : e.anotacao(); // a coluna não aceita nulo
+        jdbc.update("UPDATE ponto SET nome = ?, anotacao = ? WHERE id = ?", e.nome(), anotacao, id);
     }
 
     public void remover(int id) {

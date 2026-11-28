@@ -15,5 +15,6 @@ spring:
       schema-locations: classpath:schema-postgres.sql
 
 chaves:
-  ors: ${ORS_CHAVE}                  # OpenRouteService (tempo de trajeto e busca de endereço)
-  opentripmap: ${OPENTRIPMAP_CHAVE}  # OpenTripMap (pontos turísticos)
+  ors: ${ORS_CHAVE}                  # OpenRouteService (tempo a pé e de carro entre os pontos)
+  opentripmap: ${OPENTRIPMAP_CHAVE}  # OpenTripMap (mais visitados e busca pelo nome)
+  geoapify: ${GEOAPIFY_CHAVE}        # Geoapify (cidade no mapa, lugares por tipo, sugestões e busca)

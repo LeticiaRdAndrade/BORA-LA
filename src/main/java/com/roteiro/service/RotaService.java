@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import com.roteiro.model.GeoJson;
 import com.roteiro.model.Ponto;
 import com.roteiro.model.Trecho;
 import com.roteiro.transporte.APe;
@@ -43,27 +45,30 @@ public class RotaService {
             // POLIMORFISMO: chamo os mesmos métodos sem saber se é APe ou Carro;
             // cada um responde do seu jeito (SOBRESCRITA)
             for (MeioTransporte m : escolhidos) {
-                opcoes.add(new Trecho.Opcao(m.getNome(), calcularMinutos(de, para, m), m.getLinkApp(de, para)));
+                opcoes.add(new Trecho.Opcao(m.getNome(), calcularMinutos(de, para, m)));
             }
             resultado.add(new Trecho(de.nome(), para.nome(), opcoes));
         }
         return resultado;
     }
 
-    // Pergunta ao OpenRouteService quantos segundos leva e converto para minutos
-    @SuppressWarnings("unchecked")
+    // Pergunta ao OpenRouteService quantos segundos leva e converto para minutos.
+    // A resposta é GeoJSON: a rota é a primeira "feature" e a duração fica em properties.summary.duration.
+    // "radiuses: -1" manda ele achar a rua mais próxima a qualquer distância: sem isso, lugares dentro
+    // de parques ou lagos (ex.: Lago Negro) não tinham rua de carro por perto e davam "sem dado".
     private int calcularMinutos(Ponto origem, Ponto destino, MeioTransporte meio) {
         try {
-            Map<String, Object> r = http.get()
-                    .uri("https://api.openrouteservice.org/v2/directions/{perfil}?api_key={chave}"
-                            + "&start={lng1},{lat1}&end={lng2},{lat2}",
-                            meio.getPerfil(), chave, origem.lng(), origem.lat(), destino.lng(), destino.lat())
-                    .retrieve().body(Map.class);
+            Map<String, Object> pedido = Map.of(
+                    "coordinates", List.of(List.of(origem.lng(), origem.lat()), List.of(destino.lng(), destino.lat())),
+                    "radiuses", List.of(-1, -1));
+            GeoJson r = http.post()
+                    .uri("https://api.heigit.org/openrouteservice/v2/directions/{perfil}/geojson", meio.getPerfil())
+                    .header("Authorization", chave)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(pedido)
+                    .retrieve().body(GeoJson.class);
 
-            Map<String, Object> primeiro = ((List<Map<String, Object>>) r.get("features")).get(0);
-            Map<String, Object> props = (Map<String, Object>) primeiro.get("properties");
-            Map<String, Object> resumo = (Map<String, Object>) props.get("summary");
-            double segundos = ((Number) resumo.get("duration")).doubleValue();
+            double segundos = r.features().get(0).properties().summary().duration();
             return (int) Math.round(segundos / 60.0);
         } catch (Exception e) {
             return -1; // não consegui calcular; a tela mostra "sem dado"

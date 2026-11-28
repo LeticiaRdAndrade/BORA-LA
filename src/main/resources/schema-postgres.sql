@@ -14,3 +14,9 @@ CREATE TABLE IF NOT EXISTS ponto(
     ordem INT NOT NULL,                    -- posição do ponto no roteiro
     visitado BOOLEAN NOT NULL DEFAULT FALSE
 );
+
+-- Coluna da anotação. Com IF NOT EXISTS ela também entra em bancos que já foram criados antes
+ALTER TABLE ponto ADD COLUMN IF NOT EXISTS anotacao VARCHAR(300) NOT NULL DEFAULT '';
+
+-- Coluna do endereço do lugar (também entra em bancos que já existem)
+ALTER TABLE ponto ADD COLUMN IF NOT EXISTS endereco VARCHAR(300) NOT NULL DEFAULT '';
